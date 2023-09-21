@@ -1,12 +1,23 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProEventos.Domain
 {
+    //[Table("EventosDetalhes")] Muda o nome da tabela salva no banco de dados
     public class Evento
     {
-        public int Id {get; set;}
+        //Especifica a chave primária deste objeto para o EF
+        //[Key]
+        //public int Codigo {get; set;}
+        public int Id { get; set; }
         public string Local {get; set;}
-        public System.DateTime? DataEvento {get; set;}
+        public DateTime? DataEvento {get; set;}
+        //[NotMapped] //Este campo não será criado/salvo no BD.
+        //public int ContagemDias { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string Tema {get; set;}
         public int QtdPessoas {get; set;}
         public string Lote {get; set;}
