@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, TemplateRef, OnInit } from '@angular/core';
+import { EventoService } from '../service/evento.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-eventos',
@@ -8,12 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventosComponent implements OnInit {
   private _eventos: any[] = [];
-  widthImg:number = 150;
-  marginImg: number = 2;
-  showImages = true;
-  filtroLista: string = '';
   private _filtrarPor: string = '';
+
+  public widthImg:number = 150;
+  public marginImg: number = 2;
+  public showImages = true;
+  public filtroLista: string = '';
+  public modalRef?: BsModalRef;
+  public message?: string;
+
   
+  constructor(private eventoService: EventoService,
+    private modalService: BsModalService,
+    //private toastr: ToastrService,
+  ) { }
+
+  ngOnInit(): void {
+    this._getEventos();
+  }
+
   get eventos(): any {
     if(this.filtroLista == '') return this._eventos;
     
@@ -24,10 +39,17 @@ export class EventosComponent implements OnInit {
     );
   }
 
-  constructor(private http: HttpClient) { }
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
 
-  ngOnInit(): void {
-    this._getEventos();
+  confirm(): void {
+    //this.toastr.success('Hello world!', 'Toastr fun!');
+    this.modalRef?.hide();
+  }
+ 
+  decline(): void {
+    this.modalRef?.hide();
   }
 
   toggleShowImages() {
@@ -35,8 +57,8 @@ export class EventosComponent implements OnInit {
   }
 
   private _getEventos() {
-    this.http.get('https://localhost:5001/api/Eventos').subscribe(
-     res => this._eventos = res as Array<any>,
+    this.eventoService.getEventos().subscribe(
+     responseEventos => this._eventos = responseEventos,
      error => console.log(error),
   );
   }
