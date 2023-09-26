@@ -1,7 +1,9 @@
 <app-titulo titulo="Perfil" [botaoListar]="false"></app-titulo>
 
+<p>Form: {{ form.value | json }}</p>
+
 <div class="card rounded shadow-sm">
-  <form>
+  <form [formGroup]="form">
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
         <div class="card mb-3">
@@ -49,39 +51,54 @@
           </div>
           <div class="form-group col">
             <label>Título</label>
-            <select class="form-control">
+            <select class="form-control" formControlName="titulo">
               <option value=""></option>
               <option value="0">Não Quero</option>
-              <option value="Senhorita">Tecnólogo(a)</option>
-              <option value="Senhorita">Bacharel</option>
-              <option value="Senhorita">Especialista</option>
-              <option value="Senhorita">Pós Graduado(a)</option>
-              <option value="Senhorita">Mestre</option>
-              <option value="Senhorita">Doutor(a)</option>
-              <option value="Senhorita">Pós Doc</option>
+              <option value="Tecnologo">Tecnólogo(a)</option>
+              <option value="Bacharel">Bacharel</option>
+              <option value="Especialista">Especialista</option>
+              <option value="Pós Graduado">Pós Graduado(a)</option>
+              <option value="Mestre">Mestre</option>
+              <option value="Doutor">Doutor(a)</option>
+              <option value="Pós Doc">Pós Doc</option>
             </select>
           </div>
           <div class="form-group col-sm-5">
             <label>Primeiro Nome</label>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" formControlName="nome" [ngClass]="{'is-invalid': isInvalid('nome')}"/>
+            <div *ngIf="isInvalid('nome')" class="invalid-feedback">
+              Não pode ficar vazio
+            </div>
           </div>
           <div class="form-group col-sm-5">
             <label>Último nome</label>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" formControlName="sobrenome" [ngClass]="{'is-invalid': isInvalid('sobrenome')}" />
+            <div *ngIf="isInvalid('sobrenome')" class="invalid-feedback">
+              Não pode ficar vazio
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-sm-5">
             <label>E-mail</label>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" formControlName="email" [ngClass]="{'is-invalid': isInvalid('email')}" />
+            <div *ngIf="form.get('email').errors?.required" class="invalid-feedback">
+              Não pode ficar vazio
+            </div>
+            <div *ngIf="form.get('email').errors?.email" class="invalid-feedback">
+              Deve ser um e-mail válido!
+            </div>
           </div>
           <div class="form-group col-sm-4">
             <label>Telefone</label>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" formControlName="telefone" [ngClass]="{'is-invalid': isInvalid('telefone')}" />
+            <div *ngIf="isInvalid('telefone')" class="invalid-feedback">
+              Não pode ficar vazio
+            </div>
           </div>
           <div class="form-group col-sm">
             <label>Função</label>
-            <select class="form-control">
+            <select class="form-control" formControlName="funcao" [ngClass]="{'is-invalid': isInvalid('funcao')}">
               <option value=""></option>
               <option value="Participante">Participante</option>
               <option value="Palestrante">Palestrante</option>
@@ -89,31 +106,32 @@
           </div>
           <div class="form-group col-12">
             <label>Descrição</label>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" formControlName="descricao" />
           </div>
         </div>
         <div>
           <h3 class="pt-3 border-bottom">Mudar Senha</h3>
           <p>Caso mude de senha, preencha os campos abaixo:</p>
         </div>
+        <p class="text-danger">Faltando texto de validação para senha</p>
         <div class="form-row">
           <div class="form-group col-sm">
             <label>Senha</label>
-            <input type="password" class="form-control" />
+            <input type="password" class="form-control" formControlName="novaSenha" />
           </div>
           <div class="form-group col-sm">
             <label>Confirmar Senha</label>
-            <input type="password" class="form-control" />
+            <input type="password" class="form-control" formControlName="confirmarSenha" />
           </div>
         </div>
       </div>
     </div>
     <div class="card-footer">
       <div class="d-flex">
-        <button class="btn btn-outline-secondary mr-auto border">
+        <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm($event)">
           Cancelar Alteração
         </button>
-        <button class="btn btn-success">
+        <button class="btn btn-success" (click)="onSubmit()">
           <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
           Salvar Alteração
         </button>

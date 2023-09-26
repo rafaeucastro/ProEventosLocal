@@ -2,7 +2,9 @@ import { Component, TemplateRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { EventoService } from 'src/app/service/evento.service';
+
+import { Evento } from '@app/models/evento';
+import { EventoService } from '@app/service/evento.service';
 
 @Component({
   selector: 'app-evento-lista',
@@ -10,7 +12,7 @@ import { EventoService } from 'src/app/service/evento.service';
   styleUrls: ['./evento-lista.component.scss'],
 })
 export class EventoListaComponent implements OnInit {
-  private _eventos: any[] = [];
+  private _eventos: Evento[] = [];
   private _filtrarPor: string = '';
 
   public widthImg: number = 150;
