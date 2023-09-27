@@ -114,7 +114,7 @@ namespace ProEventos.API.Controllers
                 if (eventos == null) return NoContent();
 
                 var success = await _eventoService.Delete(id);
-                if (success) return Ok("Evento apagado!");
+                if (success) return Ok(new { message = "Evento apagado!" });
 
                 throw new Exception("Ocorreu um erro não especificado!");
             }

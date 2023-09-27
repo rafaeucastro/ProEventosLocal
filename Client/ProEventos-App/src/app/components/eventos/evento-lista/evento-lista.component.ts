@@ -21,16 +21,17 @@ export class EventoListaComponent implements OnInit {
   public filtroLista: string = '';
   public modalRef?: BsModalRef;
   public message?: string;
+  public eventoId: number;
 
   constructor(
     private eventoService: EventoService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this._getEventos();
+    this._carregarEventos();
   }
 
   get eventos(): any {
@@ -44,13 +45,32 @@ export class EventoListaComponent implements OnInit {
     );
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(event: any, template: TemplateRef<any>, eventoId: number) {
+    this.eventoId = eventoId;
+    event.stopPropagation();
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
   confirm(): void {
-    this.toastr.success('O evento foi deletado com sucesso', 'Deletado');
     this.modalRef?.hide();
+
+    this.eventoService.deleteEvento(this.eventoId).subscribe(
+      (result: any) => {
+        console.log(result);
+        if(result.message == "Evento apagado!") {
+          this.toastr.success('O evento foi removido com sucesso', 'Removido');
+          this._carregarEventos();
+        }
+      },
+      (error: any) => {
+        console.error(error);
+        this.toastr.error(
+          `Erro ao tentar remover evento ${this.eventoId}!`,
+          'Erro'
+        );
+      },
+      () => {}
+    );
   }
 
   decline(): void {
@@ -61,10 +81,11 @@ export class EventoListaComponent implements OnInit {
     this.showImages = !this.showImages;
   }
 
-  private _getEventos() {
+  private _carregarEventos() {
     this.eventoService.getEventos().subscribe(
       (responseEventos) => (this._eventos = responseEventos),
-      (error) => console.log(error)
+      (error) => console.log(error),
+      () => {}
     );
   }
 

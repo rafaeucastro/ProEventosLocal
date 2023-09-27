@@ -15,7 +15,7 @@ export class NavComponent implements OnInit {
   }
 
   get showMenu() {
-    return this.router.url != '/user/login';
+    return this.router.url != '/user/login' && this.router.url != '/user/registration';
   }
 
 }

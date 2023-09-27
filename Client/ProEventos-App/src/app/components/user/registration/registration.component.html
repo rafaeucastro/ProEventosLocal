@@ -1,5 +1,3 @@
-<p>Form: {{ form.value | json }}</p>
-
 <div class="row mt-4">
   <div class="col-md-6 d-none d-md-block" style="height: 450px">
     <div class="text-center col-md-12 my-auto side-heder">
@@ -26,9 +24,7 @@
             type="text"
             class="form-control"
             placeholder="Insira o Primeiro nome"
-            [ngClass]="{
-              'is-invalid': isInvalid('nome')
-            }"
+            [ngClass]="cssValidator('nome')"
           />
           <div *ngIf="f.nome.errors?.required" class="invalid-feedback">
             Nome é obrigatório
@@ -42,9 +38,7 @@
             formControlName="ultimoNome"
             class="form-control"
             placeholder="Insira o Último nome"
-            [ngClass]="{
-              'is-invalid': isInvalid('ultimoNome')
-            }"
+            [ngClass]="cssValidator('ultimoNome')"
           />
           <div *ngIf="f.ultimoNome.errors?.required" class="invalid-feedback">
             Campo obrigatório
@@ -59,9 +53,8 @@
           class="form-control"
           type="text"
           placeholder="exemplo@email.com"
-          [ngClass]="{
-            'is-invalid': isInvalid('email')
-          }"
+          [ngClass]="
+            cssValidator('email')"
         />
         <div *ngIf="f.email.errors?.required" class="invalid-feedback">
           Campo obrigatório
@@ -77,9 +70,7 @@
           class="form-control"
           type="text"
           placeholder="Insira o nome de Usuário"
-          [ngClass]="{
-            'is-invalid': isInvalid('usuario')
-          }"
+          [ngClass]="cssValidator('usuario')"
         />
         <div *ngIf="f.usuario.errors?.required" class="invalid-feedback">
           Campo obrigatório
@@ -93,9 +84,7 @@
             class="form-control"
             type="password"
             placeholder="Digite uma Senha"
-            [ngClass]="{
-              'is-invalid': isInvalid('senha')
-            }"
+            [ngClass]="cssValidator('senha')"
           />
           <div *ngIf="f.senha.errors?.required" class="invalid-feedback">
             Campo obrigatório
@@ -111,9 +100,7 @@
             class="form-control"
             type="password"
             placeholder="Confirme a Senha"
-            [ngClass]="{
-              'is-invalid': isInvalid('confirmarSenha')
-            }"
+            [ngClass]="cssValidator('confirmarSenha')"
           />
           <div *ngIf="isInvalid('confirmarSenha')" class="invalid-feedback">
             Senha não confere
@@ -148,7 +135,7 @@
       </div>
       <div class="form-row">
         <div class="form-group col-12">
-          <a class="btn btn-link btn-block"> Já sou Cadastrado </a>
+          <a class="btn btn-link btn-block" (click)="navegarLogin()"> Já sou Cadastrado </a>
         </div>
       </div>
     </form>

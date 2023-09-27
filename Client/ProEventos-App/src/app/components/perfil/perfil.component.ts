@@ -59,4 +59,9 @@ export class PerfilComponent implements OnInit {
     }, formOptions);
   }
 
+  public cssValidator(field: string): any {
+    const control = this.form.get(field);
+    return {'is-invalid': control.errors && control.touched}; 
+  }
+
 }

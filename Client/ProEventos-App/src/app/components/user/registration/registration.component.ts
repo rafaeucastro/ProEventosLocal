@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControlOptions } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormValidator } from '@app/shared/validators';
 
 @Component({
@@ -10,7 +11,7 @@ import { FormValidator } from '@app/shared/validators';
 export class RegistrationComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private router: Router) { }
 
   get f() {
     return this.form.controls; 
@@ -48,6 +49,15 @@ export class RegistrationComponent implements OnInit {
 
   public resetForm() {
     this.form.reset();
+  }
+
+  public cssValidator(field: string): any {
+    const control = this.form.get(field);
+    return {'is-invalid': control.errors && control.touched}; 
+  }
+
+  public navegarLogin(){
+    this.router.navigate(['/user/login']);
   }
 
 }
