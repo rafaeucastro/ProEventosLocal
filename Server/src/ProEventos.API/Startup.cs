@@ -40,9 +40,13 @@ namespace ProEventos.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             //Relacionar interface com sua respectiva implementação para injeção de dependência.
-            services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IGeralPersist, GeralPersist>();
+
+            services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IEventoPersist, EventoPersist>();
+
+            services.AddScoped<ILotePersist, LotePersist>();
+            services.AddScoped<ILoteService, LoteService>();
 
             services.AddCors();
             services.AddSwaggerGen(c =>

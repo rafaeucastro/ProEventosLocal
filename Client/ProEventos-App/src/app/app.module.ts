@@ -1,3 +1,4 @@
+import { LoteService } from './service/lote.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,9 +11,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
-import { BsDatepickerModule, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { NgxCurrencyModule } from "ngx-currency";
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -68,8 +70,11 @@ import { ErrorMessageComponent } from './shared/error-message/error-message.comp
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    NgxCurrencyModule,
   ],
-  providers: [],
+  providers: [
+    LoteService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
