@@ -17,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Lote } from '@app/models/lote';
 import { LoteService } from '@app/service/lote.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -29,6 +30,8 @@ export class EventoDetalheComponent implements OnInit {
   deveCriarEvento = true;
   public modalRef?: BsModalRef;
   public loteAtual = {indice: 0, id: 0, nome: ''};
+  file: File;
+  imagemURL = 'assets/img/upload-image.png';
 
   constructor(private fb: FormBuilder,
     private localeService: BsLocaleService,
@@ -77,6 +80,10 @@ export class EventoDetalheComponent implements OnInit {
       (evento: Evento) => {
         this.evento = {...evento};
         this.form.patchValue(evento);
+        if(this.evento.imagemURL != ''){
+          this.imagemURL = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
+        }
+
         this.evento.lotes.forEach((lote) => {
           this.lotes.push(this.criarLote(lote));
         })
@@ -104,7 +111,7 @@ export class EventoDetalheComponent implements OnInit {
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      imagemURL: ['', Validators.required],
+      imagemURL: [''],
       lotes: this.fb.array([]),
     });
   }
@@ -202,7 +209,32 @@ export class EventoDetalheComponent implements OnInit {
       }
     );
   }
+
   declineDeleteLote(): void {
     this.modalRef.hide();
+  }
+
+  onFileChange(event: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+    this.file = event.target.files;
+    reader.readAsDataURL(this.file[0]);
+
+    this.uploadImage();
+  }
+
+  uploadImage(): void {
+    this.eventoService.postUploadImage(this.evento.id, this.file).subscribe(
+      () => {
+        this.carregarEvento();
+        this.toastr.success("Imagem atualizada com sucesso", "Sucesso");
+      },
+      (error: any) => {
+        this.toastr.error('Error ao fazer upload de imagem', 'Erro');
+        console.error(error);
+      }
+    );
   }
 }
